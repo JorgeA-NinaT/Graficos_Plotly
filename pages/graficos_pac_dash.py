@@ -2,13 +2,20 @@ from dash import dcc, html, Input, Output, callback
 import pandas as pd
 import sqlalchemy as sa
 import plotly.express as px
+import os
+from dotenv import load_dotenv
+
+# Cargar las variables de entorno desde el archivo .env
+load_dotenv()
 
 # Conexión a la base de datos
-host = "192.168.100.50"
-db = "Proy_Catalogo"
-user = "postgres"
-password = "postgres"
+host = os.getenv('DB_HOST')
+db = os.getenv('DB_NAME')
+user = os.getenv('DB_USER')
+password = os.getenv('DB_PASSWORD')
 url = f'postgresql://{user}:{password}@{host}:5432/{db}'
+
+print(f"Conectando BD Postgres: {url}")
 # Crear un motor de base de datos con SQLAlchemy
 engine = sa.create_engine(url)
 
