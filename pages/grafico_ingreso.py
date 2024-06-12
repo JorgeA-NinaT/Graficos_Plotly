@@ -1,10 +1,24 @@
+import os
 from dash import dcc, html, Input, Output, callback
 import plotly.express as px
+from dotenv import load_dotenv
 import pandas as pd
 from sqlalchemy import create_engine
 
-# Conectar a la base de datos MySQL
-engine = create_engine('mysql+pymysql://mantto:Sistemas0,@192.168.100.50/Catalogo')
+# Cargar las variables de entorno desde el archivo .env
+load_dotenv()
+
+# Obtener los detalles de la conexión desde el archivo .env
+MYSQL_USER = os.getenv('MYSQL_USER')
+MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD')
+MYSQL_HOST = os.getenv('MYSQL_HOST')
+MYSQL_DATABASE = os.getenv('MYSQL_DATABASE')
+
+# Crear la URL de conexión
+connection_string = f'mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DATABASE}'
+
+# Crear el motor de conexión con SQLAlchemy
+engine = create_engine(connection_string)
 
 # Cargar datos desde la tabla 'ingreso' en un DataFrame
 df = pd.read_sql('SELECT * FROM ingreso;', engine)
